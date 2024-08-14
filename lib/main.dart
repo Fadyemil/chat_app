@@ -1,4 +1,5 @@
-import 'package:chat_app/features/auth/ui/screen/login_screen.dart';
+// import 'package:chat_app/features/auth/ui/screen/login_screen.dart';
+import 'package:chat_app/layout.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 
@@ -32,7 +33,7 @@ class MyApp extends StatelessWidget {
             seedColor: Colors.blue, brightness: Brightness.light),
         useMaterial3: true,
       ),
-      home: const LoginScreen(),
+      home: Layout(),
     );
   }
 }
