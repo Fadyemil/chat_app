@@ -10,11 +10,14 @@ environment:
 dependencies:
   cupertino_icons: ^1.0.6
   device_preview: ^1.2.0
+  firebase_auth: ^5.1.4
   firebase_core: ^3.3.0
   flutter:
     sdk: flutter
+  flutter_bloc: ^8.1.6
   flutter_colorpicker: ^1.1.0
   flutter_svg: ^2.0.10+1
+  get_it: ^7.7.0
   iconsax: ^0.0.8
   qr_flutter: ^4.1.0
 
