@@ -1,4 +1,5 @@
 import 'package:chat_app/core/di/dependency_injection.dart';
+import 'package:chat_app/features/auth/data/firebase/fire_auth.dart';
 import 'package:chat_app/features/auth/logic/cubit/auth_cubit.dart';
 import 'package:chat_app/features/auth/ui/widget/create_account_button.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,7 @@ class BlocConsumerCreateAcount extends StatelessWidget {
           //       builder: (context) => SetupProfile(),),
           //   (route) => false,
           // );
+          FireAuth.createUser();
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Done')),
           );
