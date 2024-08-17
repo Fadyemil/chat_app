@@ -1,5 +1,8 @@
 import 'package:chat_app/core/utlie/colors.dart';
 import 'package:chat_app/core/widget/text_field.dart';
+import 'package:chat_app/features/auth/data/firebase/fire_auth.dart';
+// import 'package:chat_app/features/auth/data/firebase/fire_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -18,10 +21,11 @@ class _SetupProfileState extends State<SetupProfile> {
       appBar: AppBar(
         actions: [
           IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: Icon(Iconsax.logout_1))
+            onPressed: () async {
+              await FirebaseAuth.instance.signOut();
+            },
+            icon: Icon(Iconsax.logout_1),
+          )
         ],
       ),
       body: SingleChildScrollView(
@@ -50,7 +54,9 @@ class _SetupProfileState extends State<SetupProfile> {
                 icon: Iconsax.user,
               ),
               const SizedBox(height: 16),
-              ContinuoButton(),
+              ContinuoButton(
+                nameCon: nameCon,
+              ),
             ],
           ),
         ),
@@ -62,12 +68,25 @@ class _SetupProfileState extends State<SetupProfile> {
 class ContinuoButton extends StatelessWidget {
   const ContinuoButton({
     super.key,
+    required this.nameCon,
   });
+
+  final TextEditingController nameCon;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {},
+      onPressed: () async {
+        if (nameCon.text.isNotEmpty) {
+          await FirebaseAuth.instance.currentUser!
+              .updateDisplayName(nameCon.text)
+              .then(
+            (value) {
+              FireAuth.createUser();
+            },
+          );
+        }
+      },
       style: ElevatedButton.styleFrom(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         backgroundColor: kPrimaryColor,

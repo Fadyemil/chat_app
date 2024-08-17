@@ -1,8 +1,10 @@
 import 'package:chat_app/core/di/dependency_injection.dart';
 import 'package:chat_app/features/auth/logic/cubit/auth_cubit.dart';
 import 'package:chat_app/features/auth/ui/screen/login_screen.dart';
+import 'package:chat_app/features/auth/ui/screen/setup_profile.dart';
 import 'package:chat_app/firebase_options.dart';
 import 'package:chat_app/layout.dart';
+// import 'package:chat_app/layout.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +51,12 @@ class MyApp extends StatelessWidget {
           stream: FirebaseAuth.instance.userChanges(),
           builder: (context, snapshot) {
             if (snapshot.hasData) {
-              return Layout();
+              if (FirebaseAuth.instance.currentUser!.displayName == "" ||
+                  FirebaseAuth.instance.currentUser!.displayName == null) {
+                return SetupProfile();
+              } else {
+                return Layout();
+              }
             } else {
               return LoginScreen();
             }
