@@ -1,23 +1,27 @@
-// import 'package:chat_app/features/auth/ui/screen/login_screen.dart';
+import 'package:chat_app/core/di/dependency_injection.dart';
+import 'package:chat_app/features/auth/logic/cubit/auth_cubit.dart';
+import 'package:chat_app/features/auth/ui/screen/login_screen.dart';
 import 'package:chat_app/firebase_options.dart';
 import 'package:chat_app/layout.dart';
-// import 'package:device_preview/device_preview.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  setupLocator();
   runApp(
-    // DevicePreview(
-    //   enabled: true,
-    //   builder: (context) {
-         const MyApp()
-    //   },
-    // ),
-  );
+      // DevicePreview(
+      //   enabled: true,
+      //   builder: (context) {
+      const MyApp()
+      //   },
+      // ),
+      );
 }
 
 class MyApp extends StatelessWidget {
@@ -26,20 +30,32 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      themeMode: ThemeMode.system,
-      darkTheme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.red, brightness: Brightness.dark),
+    return BlocProvider(
+      create: (context) => getIt<AuthCubit>(),
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
+        themeMode: ThemeMode.system,
+        darkTheme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+              seedColor: Colors.red, brightness: Brightness.dark),
+        ),
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+              seedColor: Colors.blue, brightness: Brightness.light),
+          useMaterial3: true,
+        ),
+        home: StreamBuilder(
+          stream: FirebaseAuth.instance.userChanges(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return Layout();
+            } else {
+              return LoginScreen();
+            }
+          },
+        ),
       ),
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(
-            seedColor: Colors.blue, brightness: Brightness.light),
-        useMaterial3: true,
-      ),
-      home: Layout(),
     );
   }
 }
