@@ -12,7 +12,6 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  TextEditingController emailCon = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +21,7 @@ class _ChatScreenState extends State<ChatScreen> {
           showBottomSheet(
             context: context,
             builder: (context) {
-              return AddFriend(emailCon: emailCon);
+              return AddFriend();
             },
           );
         },

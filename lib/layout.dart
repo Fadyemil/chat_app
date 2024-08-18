@@ -1,4 +1,4 @@
-import 'package:chat_app/features/chat/screen/chat_screen.dart';
+import 'package:chat_app/features/chat/ui/screen/chat_screen.dart';
 import 'package:chat_app/features/contact/screen/contact_screen.dart';
 import 'package:chat_app/features/groub/screen/groub_screen.dart';
 import 'package:chat_app/features/setting/screen/setting_screen.dart';

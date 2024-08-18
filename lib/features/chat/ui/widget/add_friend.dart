@@ -1,15 +1,21 @@
 import 'package:chat_app/core/widget/text_field.dart';
+import 'package:chat_app/features/chat/logic/cubit/create_room_cubit.dart';
+import 'package:chat_app/features/chat/ui/widget/bloc_cunsumer_create_room.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 
-class AddFriend extends StatelessWidget {
+class AddFriend extends StatefulWidget {
   const AddFriend({
     super.key,
-    required this.emailCon,
   });
 
-  final TextEditingController emailCon;
 
+  @override
+  State<AddFriend> createState() => _AddFriendState();
+}
+
+class _AddFriendState extends State<AddFriend> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -31,25 +37,12 @@ class AddFriend extends StatelessWidget {
             ],
           ),
           CustomField(
-            controller: emailCon,
+            controller: context.read<CreateRoomCubit>().emailCreateRoom,
             icon: Iconsax.direct,
             lable: "Email",
           ),
-          const SizedBox(
-            height: 16
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.all(16),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12)),
-                backgroundColor:
-                    Theme.of(context).colorScheme.primaryContainer),
-            onPressed: () {},
-            child: const Center(
-              child: Text("Create Chat"),
-            ),
-          ),
+          const SizedBox(height: 16),
+          const BlocCunsumerCreateRoom(),
         ],
       ),
     );

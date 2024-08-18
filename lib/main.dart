@@ -2,6 +2,7 @@ import 'package:chat_app/core/di/dependency_injection.dart';
 import 'package:chat_app/features/auth/logic/cubit/auth_cubit.dart';
 import 'package:chat_app/features/auth/ui/screen/login_screen.dart';
 import 'package:chat_app/features/auth/ui/screen/setup_profile.dart';
+import 'package:chat_app/features/chat/logic/cubit/create_room_cubit.dart';
 import 'package:chat_app/firebase_options.dart';
 import 'package:chat_app/layout.dart';
 // import 'package:chat_app/layout.dart';
@@ -32,8 +33,15 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<AuthCubit>(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => getIt<AuthCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => getIt<CreateRoomCubit>(),
+        ),
+      ],
       child: MaterialApp(
         title: 'Flutter Demo',
         debugShowCheckedModeBanner: false,
