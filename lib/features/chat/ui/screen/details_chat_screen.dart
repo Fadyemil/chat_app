@@ -1,3 +1,4 @@
+import 'package:chat_app/core/models/chat_user_model.dart';
 import 'package:chat_app/features/chat/ui/widget/app_bar_details_chat_screen.dart';
 import 'package:chat_app/features/chat/ui/widget/list_message_card.dart';
 import 'package:chat_app/features/chat/ui/widget/send_message_field.dart';
@@ -5,12 +6,15 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 
 class DetailsChatScreen extends StatelessWidget {
-  const DetailsChatScreen({super.key});
+  const DetailsChatScreen(
+      {super.key, required this.roomId, required this.chatUserModel});
+  final String roomId;
+  final ChatUserModel chatUserModel;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarDetailsChatScreen(context),
+      appBar: AppBarDetailsChatScreen(context, chatUserModel),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
         child: Column(
@@ -40,4 +44,3 @@ class DetailsChatScreen extends StatelessWidget {
     );
   }
 }
-
