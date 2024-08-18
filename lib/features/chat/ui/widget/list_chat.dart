@@ -38,7 +38,7 @@ class ListChat extends StatelessWidget {
   List<ChatRoomModel> _processChatRooms(List<QueryDocumentSnapshot> docs) {
     List<ChatRoomModel> chatRooms = docs
         .map(
-            (doc) => ChatRoomModel.formJson(doc.data() as Map<String, dynamic>))
+            (doc) => ChatRoomModel.fromJson(doc.data() as Map<String, dynamic>))
         .toList();
 
     chatRooms.sort((a, b) {

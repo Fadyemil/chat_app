@@ -21,7 +21,7 @@ class ChatUserModel {
     required this.online,
   });
 
-  factory ChatUserModel.formJson(Map<String, dynamic> json) {
+  factory ChatUserModel.fromJson(Map<String, dynamic> json) {
     return ChatUserModel(
       id: json['id'],
       name: json['name'],

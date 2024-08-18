@@ -13,7 +13,7 @@ class ChatRoomModel {
     required this.latestMessageTime,
   });
 
-  factory ChatRoomModel.formJson(Map<String, dynamic> json) {
+  factory ChatRoomModel.fromJson(Map<String, dynamic> json) {
     return ChatRoomModel(
       id: json['id'] ?? "",
       createdAt: json['created_at'],

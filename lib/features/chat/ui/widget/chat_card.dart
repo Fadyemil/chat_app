@@ -48,7 +48,7 @@ class ChatCard extends StatelessWidget {
 
   /// Converts Firestore snapshot data into a ChatUserModel object.
   ChatUserModel _getChatUserModel(DocumentSnapshot snapshot) {
-    return ChatUserModel.formJson(snapshot.data() as Map<String, dynamic>);
+    return ChatUserModel.fromJson(snapshot.data() as Map<String, dynamic>);
   }
 
   Widget _buildLoading() {
