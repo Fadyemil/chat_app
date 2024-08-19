@@ -40,6 +40,8 @@ class _DetailsChatScreenState extends State<DetailsChatScreen> {
                 Expanded(
                   child: SendMessageField(
                     controller: controller,
+                    roomId: widget.roomId,
+                    chatUserModel: widget.chatUserModel,
                   ),
                 ),
                 IconButton.filled(

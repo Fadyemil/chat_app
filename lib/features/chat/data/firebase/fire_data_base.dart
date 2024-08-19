@@ -46,14 +46,15 @@ class FireDataBase {
   Future sendMessage(
       {required String uid,
       required String msg,
-      required String roomId}) async {
+      required String roomId,
+      String? type}) async {
     String msgId = Uuid().v1();
     MessageModel messageModel = MessageModel(
       id: msgId,
       toId: uid,
       fromId: myUid,
       msg: msg,
-      type: 'text',
+      type: type ?? 'text',
       read: '',
       createdAt: DateTime.now().millisecondsSinceEpoch.toString(),
     );
@@ -64,5 +65,16 @@ class FireDataBase {
         .collection('messages')
         .doc(msgId)
         .set(messageModel.toJson());
+  }
+
+  Future readMessage({required String roomId, required String msgId}) async {
+    await firestore
+        .collection('rooms')
+        .doc(roomId)
+        .collection('messages')
+        .doc(msgId)
+        .update({
+      'read': DateTime.now().millisecondsSinceEpoch.toString(),
+    });
   }
 }
