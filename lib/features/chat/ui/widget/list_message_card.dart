@@ -37,7 +37,7 @@ class ListMessageCard extends StatelessWidget {
                     itemBuilder: (context, index) {
                       return ChatMessageCard(
                         // index: index,
-                        messageitem: messagesItems[index],
+                        messageitem: messagesItems[index], roomId: roomId,
                       );
                     },
                   )

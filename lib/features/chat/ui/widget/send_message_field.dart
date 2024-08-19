@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:chat_app/core/models/chat_user_model.dart';
+import 'package:chat_app/features/chat/data/firebase/fire_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:image_picker/image_picker.dart';
@@ -6,8 +10,12 @@ class SendMessageField extends StatelessWidget {
   const SendMessageField({
     super.key,
     required this.controller,
+    required this.roomId,
+    required this.chatUserModel,
   });
   final TextEditingController controller;
+  final String roomId;
+  final ChatUserModel chatUserModel;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +39,11 @@ class SendMessageField extends StatelessWidget {
                   XFile? image =
                       await picker.pickImage(source: ImageSource.gallery);
                   if (image != null) {
-                    print(image.path);
+                    FireStorage().sendImage(
+                      file: File(image.path),
+                      roomId: roomId,
+                      userId: chatUserModel.id!,
+                    );
                   }
                 },
                 icon: const Icon(Iconsax.camera),
