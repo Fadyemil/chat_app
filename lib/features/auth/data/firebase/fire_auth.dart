@@ -17,8 +17,8 @@ class FireAuth {
       email: user.email ?? "",
       about: "Hi I'm ENG/Fady",
       image: '',
-      createdAt: DateTime.now().toString(),
-      lastActivated: DateTime.now().toString(),
+      createdAt: DateTime.now().millisecondsSinceEpoch.toString(),
+      lastActivated: DateTime.now().millisecondsSinceEpoch.toString(),
       puchToken: '',
       online: false,
     );
