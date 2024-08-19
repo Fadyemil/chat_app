@@ -1,6 +1,8 @@
 import 'package:chat_app/core/models/chat_room_model.dart';
+import 'package:chat_app/core/models/message_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:uuid/uuid.dart';
 
 class FireDataBase {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -27,10 +29,10 @@ class FireDataBase {
       if (roomExists.docs.isEmpty) {
         ChatRoomModel chatRoomModel = ChatRoomModel(
           id: members.toString(),
-          createdAt: DateTime.now().toString(),
+          createdAt: DateTime.now().millisecondsSinceEpoch.toString(),
           members: members,
           lastMessage: '',
-          latestMessageTime: DateTime.now().toString(),
+          latestMessageTime: DateTime.now().millisecondsSinceEpoch.toString(),
         );
 
         await firestore
@@ -39,5 +41,28 @@ class FireDataBase {
             .set(chatRoomModel.toJson());
       }
     }
+  }
+
+  Future sendMessage(
+      {required String uid,
+      required String msg,
+      required String roomId}) async {
+    String msgId = Uuid().v1();
+    MessageModel messageModel = MessageModel(
+      id: msgId,
+      toId: uid,
+      fromId: myUid,
+      msg: msg,
+      type: 'text',
+      read: '',
+      createdAt: DateTime.now().millisecondsSinceEpoch.toString(),
+    );
+
+    await firestore
+        .collection('rooms')
+        .doc(roomId)
+        .collection('messages')
+        .doc(msgId)
+        .set(messageModel.toJson());
   }
 }
