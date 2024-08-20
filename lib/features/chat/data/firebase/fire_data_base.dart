@@ -1,11 +1,13 @@
 import 'package:chat_app/core/models/chat_room_model.dart';
 import 'package:chat_app/core/models/message_model.dart';
-import 'package:chat_app/features/chat/ui/widget/list_message_card.dart';
+// import 'package:chat_app/features/chat/ui/widget/list_message_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:uuid/uuid.dart';
 
 class FireDataBase {
+//   List<String> selectedMsg = [];
+// List<String> copyMsg = [];
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   final String myUid = FirebaseAuth.instance.currentUser!.uid;
@@ -85,7 +87,7 @@ class FireDataBase {
   }
 
   deleteMsg({
-    required String roomId,
+    required String roomId, required List<String> selectedMsg,
   }) async {
     for (var element in selectedMsg) {
       await firestore
@@ -95,7 +97,6 @@ class FireDataBase {
           .doc(element)
           .delete();
     }
-
     selectedMsg.clear();
   }
 }

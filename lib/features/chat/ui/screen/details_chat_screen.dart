@@ -20,14 +20,34 @@ class DetailsChatScreen extends StatefulWidget {
 
 class _DetailsChatScreenState extends State<DetailsChatScreen> {
   TextEditingController controller = TextEditingController();
+  List<String> selectedMsg = [];
+  List<String> copyMsg = [];
+  void _updateSelectedMsg(List<String> value) {
+    setState(() {
+      selectedMsg = value;
+    });
+  }
+
+  void _updateCopyMsg(List<String> value) {
+    setState(() {
+      copyMsg = value;
+    });
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBarDetailsChatScreen(
-        context,
-        widget.chatUserModel,
-        widget.roomId,
+        chatUserModel: widget.chatUserModel,
+        roomId: widget.roomId,
+        selectedMsg: selectedMsg,
+        copyMsg: copyMsg,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
@@ -37,6 +57,10 @@ class _DetailsChatScreenState extends State<DetailsChatScreen> {
               child: ListMessageCard(
                 roomId: widget.roomId,
                 chatUserModel: widget.chatUserModel,
+                selectedMsg: selectedMsg,
+                copyMsg: copyMsg,
+                onSelectedMsgChanged: _updateSelectedMsg,
+                onCopyMsgChanged: _updateCopyMsg,
               ),
             ),
             Row(
