@@ -24,7 +24,11 @@ class _DetailsChatScreenState extends State<DetailsChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarDetailsChatScreen(context, widget.chatUserModel),
+      appBar: AppBarDetailsChatScreen(
+        context,
+        widget.chatUserModel,
+        widget.roomId,
+      ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 20),
         child: Column(

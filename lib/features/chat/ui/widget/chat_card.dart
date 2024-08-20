@@ -1,9 +1,11 @@
 import 'package:chat_app/core/models/chat_room_model.dart';
 import 'package:chat_app/core/models/chat_user_model.dart';
+import 'package:chat_app/core/models/message_model.dart';
 import 'package:chat_app/features/chat/ui/screen/details_chat_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ChatCard extends StatelessWidget {
   const ChatCard({
@@ -16,7 +18,7 @@ class ChatCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final userId = _getUserId();
-    return StreamBuilder<DocumentSnapshot>(
+    return StreamBuilder(
       stream: FirebaseFirestore.instance
           .collection('users')
           .doc(userId)
@@ -69,9 +71,12 @@ class ChatCard extends StatelessWidget {
         onTap: () => _navigateToDetails(context, chatUserModel),
         leading: const CircleAvatar(),
         title: Text(chatUserModel.name ?? 'Unknown'),
-        subtitle: Text(items.lastMessage?.isEmpty ?? true
-            ? chatUserModel.about ?? 'No information'
-            : items.lastMessage!),
+        subtitle: Text(
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            items.lastMessage == ""
+                ? chatUserModel.about!
+                : items.lastMessage!),
         trailing: _buildTrailing(),
       ),
     );
@@ -90,12 +95,30 @@ class ChatCard extends StatelessWidget {
   }
 
   Widget _buildTrailing() {
-    return 1 / 1 != 0
-        ? const Badge(
-            padding: EdgeInsets.symmetric(horizontal: 12),
-            label: Text('3'),
-            largeSize: 30,
-          )
-        : Text(items.latestMessageTime ?? '');
+    return StreamBuilder(
+        stream: FirebaseFirestore.instance
+            .collection('rooms')
+            .doc(items.id)
+            .collection('messages')
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator();
+          }
+          final unReadList = snapshot.data?.docs
+              .map((e) => MessageModel.formJson(e.data()))
+              .where((element) => element.read == "")
+              .where((element) =>
+                  element.fromId != FirebaseAuth.instance.currentUser!.uid);
+          return unReadList!.isNotEmpty
+              ? Badge(
+                  padding: EdgeInsets.symmetric(horizontal: 12),
+                  label: Text(unReadList.length.toString()),
+                  largeSize: 30,
+                )
+              : Text(DateFormat.yMMMEd().format(
+                  DateTime.fromMillisecondsSinceEpoch(
+                      int.parse(items.latestMessageTime.toString()))));
+        });
   }
 }

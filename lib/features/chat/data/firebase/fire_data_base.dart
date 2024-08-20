@@ -1,5 +1,6 @@
 import 'package:chat_app/core/models/chat_room_model.dart';
 import 'package:chat_app/core/models/message_model.dart';
+import 'package:chat_app/features/chat/ui/widget/list_message_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:uuid/uuid.dart';
@@ -65,6 +66,11 @@ class FireDataBase {
         .collection('messages')
         .doc(msgId)
         .set(messageModel.toJson());
+
+    firestore.collection('rooms').doc(roomId).update({
+      'last_message': type ?? msg,
+      'latest_message_time': DateTime.now().millisecondsSinceEpoch.toString(),
+    });
   }
 
   Future readMessage({required String roomId, required String msgId}) async {
@@ -76,5 +82,20 @@ class FireDataBase {
         .update({
       'read': DateTime.now().millisecondsSinceEpoch.toString(),
     });
+  }
+
+  deleteMsg({
+    required String roomId,
+  }) async {
+    for (var element in selectedMsg) {
+      await firestore
+          .collection('rooms')
+          .doc(roomId)
+          .collection('messages')
+          .doc(element)
+          .delete();
+    }
+
+    selectedMsg.clear();
   }
 }
