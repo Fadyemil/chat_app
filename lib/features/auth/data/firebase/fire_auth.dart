@@ -21,6 +21,7 @@ class FireAuth {
       lastActivated: DateTime.now().millisecondsSinceEpoch.toString(),
       puchToken: '',
       online: false,
+      myUsers: [],
     );
     //~ Saving the user information to Firestore under the 'users' collection
     await firebaseFirestore

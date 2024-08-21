@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:chat_app/core/models/chat_room_model.dart';
 import 'package:chat_app/core/models/message_model.dart';
 // import 'package:chat_app/features/chat/ui/widget/list_message_card.dart';
@@ -6,8 +8,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:uuid/uuid.dart';
 
 class FireDataBase {
-//   List<String> selectedMsg = [];
-// List<String> copyMsg = [];
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   final String myUid = FirebaseAuth.instance.currentUser!.uid;
@@ -43,6 +43,21 @@ class FireDataBase {
             .doc(members.toString())
             .set(chatRoomModel.toJson());
       }
+    }
+  }
+
+  Future addContact({required String email}) async {
+    QuerySnapshot userEmail = await firestore
+        .collection('users')
+        .where('email', isEqualTo: email)
+        .get();
+    if (userEmail.docs.isNotEmpty) {
+      String userId = userEmail.docs.first.id;
+      await firestore.collection('users').doc(myUid).update(
+        {
+          'my_users': FieldValue.arrayUnion([userId]),
+        },
+      );
     }
   }
 
@@ -87,7 +102,8 @@ class FireDataBase {
   }
 
   deleteMsg({
-    required String roomId, required List<String> selectedMsg,
+    required String roomId,
+    required List<String> selectedMsg,
   }) async {
     for (var element in selectedMsg) {
       await firestore
