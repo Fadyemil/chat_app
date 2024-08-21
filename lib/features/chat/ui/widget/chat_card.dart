@@ -43,9 +43,13 @@ class ChatCard extends StatelessWidget {
   /// It filters out the current user's ID from the list of members
   /// and returns the first matching ID (which is the other participant).
   String _getUserId() {
-    return items.members!
+    List member = items.members!
         .where((element) => element != FirebaseAuth.instance.currentUser!.uid)
-        .first;
+        .toList();
+
+    return member.isEmpty
+        ? FirebaseAuth.instance.currentUser!.uid
+        : member.first;
   }
 
   /// Converts Firestore snapshot data into a ChatUserModel object.

@@ -133,7 +133,7 @@ class _ListMessageCardState extends State<ListMessageCard> {
                   );
           }
           {
-            return Center(child: Text('No messages yet'));
+            return Center(child: CircularProgressIndicator());
           }
         });
   }
