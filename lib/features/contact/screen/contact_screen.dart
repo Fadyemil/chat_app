@@ -1,7 +1,9 @@
+// import 'package:chat_app/features/contact/logic/cubit/contact_cubit.dart';
 import 'package:chat_app/features/contact/widget/add_contact.dart';
 import 'package:chat_app/features/contact/widget/contact_app_bar.dart';
 import 'package:chat_app/features/contact/widget/list_contact.dart';
 import 'package:flutter/material.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 
 class ContactScreen extends StatefulWidget {
@@ -12,21 +14,12 @@ class ContactScreen extends StatefulWidget {
 }
 
 class _ContactScreenState extends State<ContactScreen> {
-  bool searched = false;
   TextEditingController emailCon = TextEditingController();
-  TextEditingController searchCon = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: ContactAppBar(
-        searched: searched,
-        searchCon: searchCon,
-        onToggleSearch: () {
-          setState(() {
-            searched = !searched;
-          });
-        },
-      ),
+      appBar: ContactAppBar(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showBottomSheet(
@@ -41,9 +34,15 @@ class _ContactScreenState extends State<ContactScreen> {
         },
         child: const Icon(Iconsax.user_add),
       ),
-      body: const Padding(
+      body: Padding(
         padding: EdgeInsets.all(20.0),
-        child: Column(children: [Expanded(child: ListContact())]),
+        child: Column(
+          children: [
+            Expanded(
+              child: ListContact(),
+            ),
+          ],
+        ),
       ),
     );
   }
