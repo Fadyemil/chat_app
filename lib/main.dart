@@ -3,6 +3,7 @@ import 'package:chat_app/features/auth/logic/cubit/auth_cubit.dart';
 import 'package:chat_app/features/auth/ui/screen/login_screen.dart';
 import 'package:chat_app/features/auth/ui/screen/setup_profile.dart';
 import 'package:chat_app/features/chat/logic/cubit/create_room_cubit.dart';
+import 'package:chat_app/features/contact/logic/cubit/contact_cubit.dart';
 import 'package:chat_app/firebase_options.dart';
 import 'package:chat_app/layout.dart';
 // import 'package:chat_app/layout.dart';
@@ -40,6 +41,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => getIt<CreateRoomCubit>(),
+        ),
+        BlocProvider(
+          create: (context) => ContactCubit()..loadContacts(),
         ),
       ],
       child: MaterialApp(
