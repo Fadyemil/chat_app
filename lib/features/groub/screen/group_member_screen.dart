@@ -16,8 +16,8 @@ class GroupMemberScreen extends StatefulWidget {
 class _GroupMemberScreenState extends State<GroupMemberScreen> {
   @override
   Widget build(BuildContext context) {
-    bool isAdmin = widget.groubModel.admin
-        !.contains(FirebaseAuth.instance.currentUser!.uid);
+    bool isAdmin = widget.groubModel.admin!
+        .contains(FirebaseAuth.instance.currentUser!.uid);
     return Scaffold(
       appBar: AppBar(
         title: const Text("Group members"),
@@ -28,7 +28,11 @@ class _GroupMemberScreenState extends State<GroupMemberScreen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const EditGroupScreen(),
+                          builder: (context) => EditGroupScreen(
+                            groubModel: widget.groubModel,
+                            // members: widget.groubModel.members,
+                            // onMembersUpdated: () {},
+                          ),
                         ));
                   },
                   icon: const Icon(Iconsax.user_edit),

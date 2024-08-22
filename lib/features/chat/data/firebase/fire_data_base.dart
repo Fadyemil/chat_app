@@ -163,4 +163,11 @@ class FireDataBase {
     }
     selectedMsg.clear();
   }
+
+  Future editGroup({required String gid, String? name, List? members}) async {
+    await firestore.collection('groups').doc(gid).update({
+      'name': name,
+      'members': FieldValue.arrayUnion(members!),
+    });
+  }
 }

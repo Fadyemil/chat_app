@@ -19,6 +19,12 @@ class AddMembersGroub extends StatefulWidget {
 
 class _AddMembersGroubState extends State<AddMembersGroub> {
   @override
+  void initState() {
+    super.initState();
+    context.read<GroupCubit>().loadContacts();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder<GroupCubit, GroupState>(
       builder: (context, state) {
