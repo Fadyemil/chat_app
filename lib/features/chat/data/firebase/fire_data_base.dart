@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:chat_app/core/models/chat_room_model.dart';
+import 'package:chat_app/core/models/groub_model.dart';
 import 'package:chat_app/core/models/message_model.dart';
 // import 'package:chat_app/features/chat/ui/widget/list_message_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -11,6 +12,8 @@ class FireDataBase {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   final String myUid = FirebaseAuth.instance.currentUser!.uid;
+
+  String now = DateTime.now().millisecondsSinceEpoch.toString();
 
   Future createRoom(String email) async {
     QuerySnapshot userEmail = await firestore
@@ -44,6 +47,23 @@ class FireDataBase {
             .set(chatRoomModel.toJson());
       }
     }
+  }
+
+  Future createGroub({required String name, required List members}) async {
+    String gid = Uuid().v1();
+    members.add(myUid);
+    GroubModel groubModel = GroubModel(
+      id: gid,
+      name: name,
+      image: '',
+      members: members,
+      admin: [myUid],
+      lastMessage: '',
+      lastMessageTime: now,
+      createdAt: now,
+    );
+
+    await firestore.collection('groups').doc(gid).set(groubModel.toJson());
   }
 
   Future addContact({required String email}) async {
