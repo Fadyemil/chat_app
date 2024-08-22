@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:chat_app/core/models/chat_room_model.dart';
 import 'package:chat_app/core/models/groub_model.dart';
@@ -62,6 +63,7 @@ class FireDataBase {
       lastMessageTime: now,
       createdAt: now,
     );
+    log('Group Data Before Saving: ${groubModel.toJson()}');
 
     await firestore.collection('groups').doc(gid).set(groubModel.toJson());
   }
@@ -104,7 +106,33 @@ class FireDataBase {
         .doc(msgId)
         .set(messageModel.toJson());
 
-    firestore.collection('rooms').doc(roomId).update({
+    await firestore.collection('rooms').doc(roomId).update({
+      'last_message': type ?? msg,
+      'latest_message_time': DateTime.now().millisecondsSinceEpoch.toString(),
+    });
+  }
+
+  Future sendGroubMessage(
+      {required String msg, required String groupId, String? type}) async {
+    String msgId = Uuid().v1();
+    MessageModel messageModel = MessageModel(
+      id: msgId,
+      toId: '',
+      fromId: myUid,
+      msg: msg,
+      type: type ?? 'text',
+      read: '',
+      createdAt: DateTime.now().millisecondsSinceEpoch.toString(),
+    );
+
+    await firestore
+        .collection('groups')
+        .doc(groupId)
+        .collection('messages')
+        .doc(msgId)
+        .set(messageModel.toJson());
+
+    await firestore.collection('groups').doc(groupId).update({
       'last_message': type ?? msg,
       'latest_message_time': DateTime.now().millisecondsSinceEpoch.toString(),
     });
