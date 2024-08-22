@@ -25,7 +25,7 @@ class GroubModel {
       name: json['name'] ?? '',
       image: json['image'] ?? '',
       members: json['members'] ?? [],
-      admin: json['admin'] ?? [],
+      admin: json['admins_id'] ?? [],
       lastMessage: json['last_message'] ?? '',
       lastMessageTime: json['last_message_time'] ?? '',
       createdAt: json['created_at'] ?? '',
