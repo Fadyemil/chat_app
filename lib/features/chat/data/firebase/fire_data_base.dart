@@ -170,4 +170,20 @@ class FireDataBase {
       'members': FieldValue.arrayUnion(members!),
     });
   }
+
+  Future removeMember({required String gid,required String memberId }) async {
+    await firestore.collection('groups').doc(gid).update({
+      'members':FieldValue.arrayRemove([memberId]),
+    });
+  }
+  Future prompAdmin({required String gid,required String memberId }) async {
+    await firestore.collection('groups').doc(gid).update({
+      'admins_id':FieldValue.arrayUnion([memberId]),
+    });
+  }
+  Future removeAdmin({required String gid,required String memberId }) async {
+    await firestore.collection('groups').doc(gid).update({
+      'admins_id':FieldValue.arrayRemove([memberId]),
+    });
+  }
 }

@@ -33,7 +33,7 @@ class ListMembetItems extends StatelessWidget {
               },
             );
           } else {
-            return Container();
+           return Center(child: CircularProgressIndicator());
           }
         });
   }

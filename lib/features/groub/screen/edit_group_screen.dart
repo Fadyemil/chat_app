@@ -83,11 +83,11 @@ class _EditGroupScreenState extends State<EditGroupScreen> {
               height: 32,
               thickness: 2,
             ),
-            const Row(
+            Row(
               children: [
                 Text("Add Members"),
                 Spacer(),
-                Text("0"),
+                Text(members.length.toString()),
               ],
             ),
             const SizedBox(height: 16),

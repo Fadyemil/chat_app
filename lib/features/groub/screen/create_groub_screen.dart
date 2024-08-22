@@ -65,11 +65,11 @@ class _CreateGroubScreenState extends State<CreateGroubScreen> {
               height: 32,
               thickness: 2,
             ),
-            const Row(
+            Row(
               children: [
                 Text("Members"),
                 Spacer(),
-                Text("0"),
+                Text(members.length.toString()),
               ],
             ),
             const SizedBox(height: 16),
