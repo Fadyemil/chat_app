@@ -21,7 +21,7 @@ class ListContact extends StatelessWidget {
             },
           );
         } else if (state is ContactError) {
-          return Center(child: Text(state.message));
+          return const Center(child: Text('No contacts available.'));
         } else {
           return const Center(child: Text('No contacts available.'));
         }
