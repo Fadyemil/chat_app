@@ -1,4 +1,5 @@
 import 'package:chat_app/core/widget/text_field.dart';
+import 'package:chat_app/features/chat/data/firebase/fire_data_base.dart';
 import 'package:chat_app/features/groub/widget/widget_create_groub/AddPhoto.dart';
 import 'package:chat_app/features/groub/widget/widget_create_groub/AddMembersGroub.dart';
 import 'package:flutter/material.dart';
@@ -6,22 +7,36 @@ import 'package:iconsax/iconsax.dart';
 
 class CreateGroubScreen extends StatefulWidget {
   const CreateGroubScreen({super.key});
-
   @override
   State<CreateGroubScreen> createState() => _CreateGroubScreenState();
 }
 
 class _CreateGroubScreenState extends State<CreateGroubScreen> {
   TextEditingController gNameCon = TextEditingController();
+  List<String> members = [];
+  void _updateMembers() {
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {},
-        label: const Text("Done"),
-        icon: const Icon(Iconsax.tick_circle),
-      ),
+      floatingActionButton: members.isNotEmpty
+          ? FloatingActionButton.extended(
+              onPressed: () {
+                FireDataBase()
+                    .createGroub(name: gNameCon.text, members: members)
+                    .then((value) {
+                  Navigator.pop(context);
+                  setState(() {
+                    members = [];
+                  });
+                });
+              },
+              label: const Text("Done"),
+              icon: const Icon(Iconsax.tick_circle),
+            )
+          : Container(),
       appBar: AppBar(
         title: const Text("Create Group"),
       ),
@@ -58,8 +73,11 @@ class _CreateGroubScreenState extends State<CreateGroubScreen> {
               ],
             ),
             const SizedBox(height: 16),
-            const Expanded(
-              child: AddMembersGroub(),
+            Expanded(
+              child: AddMembersGroub(
+                members: members,
+                onMembersUpdated: _updateMembers,
+              ),
             )
           ],
         ),

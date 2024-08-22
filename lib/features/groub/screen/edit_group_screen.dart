@@ -64,8 +64,8 @@ class _EditGroupScreenState extends State<EditGroupScreen> {
               ],
             ),
             const SizedBox(height: 16),
-            const Expanded(
-              child: AddMembersGroub(),
+            Expanded(
+              child: AddMembersGroub(members: [], onMembersUpdated: () {}),
             )
           ],
         ),
