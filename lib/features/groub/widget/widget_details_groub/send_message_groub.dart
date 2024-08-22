@@ -3,13 +3,15 @@ import 'package:iconsax/iconsax.dart';
 
 class SendMessageGroub extends StatelessWidget {
   const SendMessageGroub({
-    super.key,
+    super.key, required this.sendMessageGroub,
   });
+  final  TextEditingController sendMessageGroub;
 
   @override
   Widget build(BuildContext context) {
     return Card(
       child: TextField(
+        controller: sendMessageGroub,
         maxLines: 5,
         minLines: 1,
         decoration: InputDecoration(
