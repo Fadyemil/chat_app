@@ -8,6 +8,7 @@ import 'package:chat_app/features/groub/logic/cubit/group_cubit.dart';
 import 'package:chat_app/features/setting/data/constant.dart';
 import 'package:chat_app/features/setting/data/enum/theme_state.dart';
 import 'package:chat_app/features/setting/logic/cubit/app_theme_cubit.dart';
+import 'package:chat_app/features/setting/logic/get_user_cubit/get_user_cubit.dart';
 import 'package:chat_app/firebase_options.dart';
 import 'package:chat_app/layout.dart';
 // import 'package:chat_app/layout.dart';
@@ -56,6 +57,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => AppThemeCubit()..changeTheme(Themestate.initial),
+        ),
+        BlocProvider(
+          create: (context) => GetUserCubit()..getUserDetails(),
         ),
       ],
       child: Builder(builder: (context) {
