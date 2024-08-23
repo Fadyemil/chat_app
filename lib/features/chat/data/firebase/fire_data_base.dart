@@ -171,19 +171,28 @@ class FireDataBase {
     });
   }
 
-  Future removeMember({required String gid,required String memberId }) async {
+  Future removeMember({required String gid, required String memberId}) async {
     await firestore.collection('groups').doc(gid).update({
-      'members':FieldValue.arrayRemove([memberId]),
+      'members': FieldValue.arrayRemove([memberId]),
     });
   }
-  Future prompAdmin({required String gid,required String memberId }) async {
+
+  Future prompAdmin({required String gid, required String memberId}) async {
     await firestore.collection('groups').doc(gid).update({
-      'admins_id':FieldValue.arrayUnion([memberId]),
+      'admins_id': FieldValue.arrayUnion([memberId]),
     });
   }
-  Future removeAdmin({required String gid,required String memberId }) async {
+
+  Future removeAdmin({required String gid, required String memberId}) async {
     await firestore.collection('groups').doc(gid).update({
-      'admins_id':FieldValue.arrayRemove([memberId]),
+      'admins_id': FieldValue.arrayRemove([memberId]),
+    });
+  }
+
+  Future editProfiel({String? name, String? about}) async {
+    await firestore.collection('users').doc(myUid).update({
+      'name': name,
+      'about': about,
     });
   }
 }

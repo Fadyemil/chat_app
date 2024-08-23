@@ -1,5 +1,5 @@
+import 'package:chat_app/features/chat/data/firebase/fire_data_base.dart';
 import 'package:chat_app/features/setting/logic/get_user_cubit/get_user_cubit.dart';
-import 'package:chat_app/features/setting/widget/profile_widget/custom_button.dart';
 import 'package:chat_app/features/setting/widget/profile_widget/email_phone.dart';
 import 'package:chat_app/features/setting/widget/profile_widget/my_about.dart';
 import 'package:chat_app/features/setting/widget/profile_widget/my_name.dart';
@@ -17,6 +17,8 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   TextEditingController nameCon = TextEditingController();
   TextEditingController aboutCon = TextEditingController();
+  bool nameEdit = false;
+  bool aboutEdit = false;
   @override
   void initState() {
     // TODO: implement initState
@@ -38,12 +40,48 @@ class _ProfileScreenState extends State<ProfileScreen> {
             children: [
               MyPhoto(),
               const SizedBox(height: 20),
-              Card(child: MyName(nameCon: nameCon)),
-              Card(child: MyAbout(nameCon: aboutCon)),
+              Card(
+                  child: MyName(
+                nameCon: nameCon,
+                nameEdit: nameEdit,
+              )),
+              Card(
+                  child: MyAbout(
+                nameCon: aboutCon,
+                aboutEdit: aboutEdit,
+              )),
               const Card(child: Email()),
               const Card(child: phone()),
               const SizedBox(height: 20),
-              CustomButton(),
+              ElevatedButton(
+                onPressed: () {
+                  if (aboutCon.text.isNotEmpty || nameCon.text.isNotEmpty) {
+                    setState(() {
+                      FireDataBase()
+                          .editProfiel(name: nameCon.text, about: aboutCon.text)
+                          .then((val) {
+                        setState(() {
+                          aboutEdit = false;
+                          nameEdit = false;
+                        });
+                      });
+                    });
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12)),
+                  backgroundColor:
+                      Theme.of(context).colorScheme.primaryContainer,
+                  padding: const EdgeInsets.all(16),
+                ),
+                child: Center(
+                  child: Text(
+                    "Save".toUpperCase(),
+                    // style: const TextStyle(color: Colors.black),
+                  ),
+                ),
+              )
             ],
           ),
         ),

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chat_app/core/models/chat_room_model.dart';
 import 'package:chat_app/core/models/chat_user_model.dart';
 import 'package:chat_app/core/models/message_model.dart';
@@ -73,7 +74,18 @@ class ChatCard extends StatelessWidget {
     return Card(
       child: ListTile(
         onTap: () => _navigateToDetails(context, chatUserModel),
-        leading: const CircleAvatar(),
+        leading: chatUserModel.image == ""
+            ? CircleAvatar()
+            : CircleAvatar(
+                child: CachedNetworkImage(
+                  imageUrl: chatUserModel.image!,
+                  imageBuilder: (context, imageProvider) => CircleAvatar(
+                    backgroundImage: imageProvider,
+                  ),
+                  placeholder: (context, url) => CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
+                ),
+              ),
         title: Text(chatUserModel.name ?? 'Unknown'),
         subtitle: Text(
             maxLines: 2,
