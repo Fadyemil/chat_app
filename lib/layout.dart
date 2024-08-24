@@ -1,8 +1,10 @@
 import 'package:chat_app/features/chat/ui/screen/chat_screen.dart';
 import 'package:chat_app/features/contact/screen/contact_screen.dart';
 import 'package:chat_app/features/groub/screen/groub_screen.dart';
+import 'package:chat_app/features/setting/logic/get_user_cubit/get_user_cubit.dart';
 import 'package:chat_app/features/setting/screen/setting_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:iconsax/iconsax.dart';
 
 class Layout extends StatefulWidget {
@@ -15,6 +17,12 @@ class Layout extends StatefulWidget {
 class _LayoutState extends State<Layout> {
   int currentIndex = 0;
   PageController pageController = PageController();
+  @override
+  void initState() {
+    super.initState();
+    context.read<GetUserCubit>().getUserDetails();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

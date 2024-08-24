@@ -29,4 +29,15 @@ class FireAuth {
         .doc(chatUserModel.id) //~ Document ID is the user's unique ID
         .set(chatUserModel.toJson()); //~ Storing data as JSON
   }
+
+  Future getToken({required String token}) async {
+    await firebaseFirestore
+        .collection('users')
+        .doc(auth.currentUser!.uid)
+        .update(
+      {
+        'puch_token': token,
+      },
+    );
+  }
 }
