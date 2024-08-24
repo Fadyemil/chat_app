@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chat_app/core/models/message_model.dart';
+import 'package:chat_app/core/utlie/photo_view.dart';
 import 'package:chat_app/features/chat/data/firebase/fire_data_base.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -70,15 +71,27 @@ class _ChatMessageCardState extends State<ChatMessageCard> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     widget.messageitem.type == "image"
-                        ? Container(
-                            child: CachedNetworkImage(
-                              imageUrl: widget.messageitem.msg!,
-                              progressIndicatorBuilder:
-                                  (context, url, downloadProgress) =>
-                                      CircularProgressIndicator(
-                                          value: downloadProgress.progress),
-                              errorWidget: (context, url, error) =>
-                                  const Icon(Icons.error),
+                        ? GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => PhotoViewScreen(
+                                    image: widget.messageitem.msg!,
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Container(
+                              child: CachedNetworkImage(
+                                imageUrl: widget.messageitem.msg!,
+                                progressIndicatorBuilder:
+                                    (context, url, downloadProgress) =>
+                                        CircularProgressIndicator(
+                                            value: downloadProgress.progress),
+                                errorWidget: (context, url, error) =>
+                                    const Icon(Icons.error),
+                              ),
                             ),
                           )
                         : Text(widget.messageitem.msg!),
