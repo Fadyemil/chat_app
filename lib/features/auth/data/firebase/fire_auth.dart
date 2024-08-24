@@ -40,4 +40,13 @@ class FireAuth {
       },
     );
   }
+
+  Future updateActivate({required bool online}) async {
+    await firebaseFirestore.collection('users').doc(user.uid).update(
+      {
+        'online': online,
+        'last_activated': DateTime.now().millisecondsSinceEpoch.toString(),
+      },
+    );
+  }
 }

@@ -1,5 +1,6 @@
 import 'package:chat_app/core/models/chat_user_model.dart';
 import 'package:chat_app/features/chat/data/firebase/fire_data_base.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
@@ -38,10 +39,23 @@ class _AppBarDetailsChatScreenState extends State<AppBarDetailsChatScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(widget.chatUserModel.name!),
-          Text(
-            widget.chatUserModel.lastActivated!,
-            style: Theme.of(context).textTheme.labelLarge,
-          ),
+          StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection('users')
+                  .doc(widget.chatUserModel.id)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Text(
+                    snapshot.data!.data()!['online']
+                        ? 'Online'
+                        : " last Seen at ${widget.chatUserModel.lastActivated!}",
+                    style: Theme.of(context).textTheme.labelLarge,
+                  );
+                } else {
+                  return Container();
+                }
+              }),
         ],
       ),
       actions: [
