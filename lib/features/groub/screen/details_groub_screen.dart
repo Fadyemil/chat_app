@@ -26,8 +26,9 @@ class _DetailsGroubScreenState extends State<DetailsGroubScreen> {
         child: Column(
           children: [
             Expanded(
-              child: ListChatMessages(groubModel: widget.groubModel,),
-             
+              child: ListChatMessages(
+                groubModel: widget.groubModel,
+              ),
             ),
             Row(
               children: [
@@ -41,6 +42,8 @@ class _DetailsGroubScreenState extends State<DetailsGroubScreen> {
                       if (sendMessageGroub.text.isNotEmpty) {
                         FireDataBase()
                             .sendGroubMessage(
+                                context: context,
+                                chatGroup: widget.groubModel,
                                 msg: sendMessageGroub.text,
                                 groupId: widget.groubModel.id!)
                             .then((v) => {
@@ -59,4 +62,3 @@ class _DetailsGroubScreenState extends State<DetailsGroubScreen> {
     );
   }
 }
-

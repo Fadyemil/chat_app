@@ -126,6 +126,8 @@ class _ListMessageCardState extends State<ListMessageCard> {
                           uid: widget.chatUserModel.id!,
                           msg: 'Say Assalamu Alaikum 👋',
                           roomId: widget.roomId,
+                          context: context,
+                          chatUsers: widget.chatUserModel,
                         );
                       },
                       child: WelcomeMessage(),

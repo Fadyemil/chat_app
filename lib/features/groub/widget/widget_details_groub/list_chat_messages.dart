@@ -47,6 +47,8 @@ class _ListChatMessagesState extends State<ListChatMessages> {
                 child: InkWell(
                   onTap: () {
                     FireDataBase().sendGroubMessage(
+                        context: context,
+                        chatGroup: widget.groubModel,
                         msg: 'Say Assalamu Alaikum 👋',
                         groupId: widget.groubModel.id!);
                   },

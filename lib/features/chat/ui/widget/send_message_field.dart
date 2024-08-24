@@ -43,6 +43,8 @@ class SendMessageField extends StatelessWidget {
                       file: File(image.path),
                       roomId: roomId,
                       userId: chatUserModel.id!,
+                      context: context,
+                      chatUser: chatUserModel,
                     );
                   }
                 },

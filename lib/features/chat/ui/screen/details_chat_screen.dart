@@ -77,9 +77,12 @@ class _DetailsChatScreenState extends State<DetailsChatScreen> {
                     if (controller.text.isNotEmpty) {
                       FireDataBase()
                           .sendMessage(
-                              uid: widget.chatUserModel.id!,
-                              msg: controller.text,
-                              roomId: widget.roomId)
+                        uid: widget.chatUserModel.id!,
+                        msg: controller.text,
+                        roomId: widget.roomId,
+                        context: context,
+                        chatUsers: widget.chatUserModel,
+                      )
                           .then((value) {
                         setState(() {
                           controller.text = '';
