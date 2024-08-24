@@ -2,11 +2,17 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:chat_app/core/models/chat_room_model.dart';
+import 'package:chat_app/core/models/chat_user_model.dart';
+import 'package:chat_app/core/models/cloud_messaging.dart';
 import 'package:chat_app/core/models/groub_model.dart';
 import 'package:chat_app/core/models/message_model.dart';
+// import 'package:chat_app/features/setting/logic/get_user_cubit/get_user_cubit.dart';
 // import 'package:chat_app/features/chat/ui/widget/list_message_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+// import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
 
 class FireDataBase {
@@ -83,11 +89,14 @@ class FireDataBase {
     }
   }
 
-  Future sendMessage(
-      {required String uid,
-      required String msg,
-      required String roomId,
-      String? type}) async {
+  Future sendMessage({
+    required String uid,
+    required String msg,
+    required String roomId,
+    required BuildContext context,
+    required ChatUserModel chatUsers,
+    String? type,
+  }) async {
     String msgId = Uuid().v1();
     MessageModel messageModel = MessageModel(
       id: msgId,
@@ -104,7 +113,11 @@ class FireDataBase {
         .doc(roomId)
         .collection('messages')
         .doc(msgId)
-        .set(messageModel.toJson());
+        .set(messageModel.toJson())
+        .then((value) {
+      PushNotificationService.sendNotificationToAdmin(
+          chatUser: chatUsers, context: context, messageBody: type ?? msg);
+    });
 
     await firestore.collection('rooms').doc(roomId).update({
       'last_message': type ?? msg,
@@ -112,8 +125,27 @@ class FireDataBase {
     });
   }
 
-  Future sendGroubMessage(
-      {required String msg, required String groupId, String? type}) async {
+  Future sendGroubMessage({
+    required String msg,
+    required String groupId,
+    required BuildContext context,
+    required GroubModel chatGroup,
+    String? type,
+  }) async {
+    List<ChatUserModel> chatUsers = [];
+    chatGroup.members =
+        chatGroup.members!.where((element) => element != myUid).toList();
+    firestore
+        .collection('users')
+        .where('id', whereIn: chatGroup.members)
+        .get()
+        .then(
+          (value) => chatUsers.addAll(
+            value.docs.map(
+              (e) => ChatUserModel.fromJson(e.data()),
+            ),
+          ),
+        );
     String msgId = Uuid().v1();
     MessageModel messageModel = MessageModel(
       id: msgId,
@@ -130,7 +162,19 @@ class FireDataBase {
         .doc(groupId)
         .collection('messages')
         .doc(msgId)
-        .set(messageModel.toJson());
+        .set(messageModel.toJson())
+        .then(
+      (value) {
+        for (var element in chatUsers) {
+          PushNotificationService.sendNotificationToAdmin(
+            chatUser: element,
+            context: context,
+            messageBody: type ?? msg,
+            groupName: chatGroup.name,
+          );
+        }
+      },
+    );
 
     await firestore.collection('groups').doc(groupId).update({
       'last_message': type ?? msg,

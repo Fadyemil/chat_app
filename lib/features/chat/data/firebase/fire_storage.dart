@@ -1,10 +1,14 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:chat_app/core/models/chat_user_model.dart';
 import 'package:chat_app/features/chat/data/firebase/fire_data_base.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 
 class FireStorage {
   final FirebaseStorage fireStorage = FirebaseStorage.instance;
@@ -13,6 +17,8 @@ class FireStorage {
     required File file,
     required String roomId,
     required String userId,
+    required BuildContext context,
+    required ChatUserModel chatUser,
   }) async {
     try {
       String ext = file.path.split('.').last;
@@ -34,6 +40,8 @@ class FireStorage {
         msg: imageUrl,
         roomId: roomId,
         type: 'image',
+        context: context,
+        chatUsers: chatUser,
       );
 
       log('Image URL: $imageUrl');
