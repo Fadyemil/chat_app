@@ -2,11 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:chat_app/core/models/chat_room_model.dart';
 import 'package:chat_app/core/models/chat_user_model.dart';
 import 'package:chat_app/core/models/message_model.dart';
+import 'package:chat_app/core/utlie/date_time.dart';
 import 'package:chat_app/features/chat/ui/screen/details_chat_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+// import 'package:intl/intl.dart';
 
 class ChatCard extends StatelessWidget {
   const ChatCard({
@@ -132,9 +133,8 @@ class ChatCard extends StatelessWidget {
                   label: Text(unReadList.length.toString()),
                   largeSize: 30,
                 )
-              : Text(DateFormat.yMMMEd().format(
-                  DateTime.fromMillisecondsSinceEpoch(
-                      int.parse(items.latestMessageTime.toString()))));
+              : Text(MyDateTime.dateAndTime(time: items.latestMessageTime!)
+                  .toString());
         });
   }
 }

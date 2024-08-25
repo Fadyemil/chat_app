@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:chat_app/core/models/chat_user_model.dart';
 import 'package:chat_app/core/models/message_model.dart';
+import 'package:chat_app/core/utlie/date_time.dart';
 import 'package:chat_app/features/chat/data/firebase/fire_data_base.dart';
 import 'package:chat_app/features/chat/ui/widget/chat_message_card.dart';
 import 'package:chat_app/features/chat/ui/widget/welcome_message.dart';
@@ -48,6 +51,26 @@ class _ListMessageCardState extends State<ListMessageCard> {
                     reverse: true,
                     itemCount: messagesItems.length,
                     itemBuilder: (context, index) {
+                      String newDate = '';
+                      bool isSameDate = false;
+                      if ((index == 0 && messagesItems.length == 1) ||
+                          index == messagesItems.length - 1) {
+                        newDate = MyDateTime.dateAndTime(
+                            time: messagesItems[index].createdAt.toString());
+                      } else {
+                        final DateTime date = MyDateTime.dateFormat(
+                            time: messagesItems[index].createdAt.toString());
+                        final DateTime prDate = MyDateTime.dateFormat(
+                            time:
+                                messagesItems[index + 1].createdAt.toString());
+                        isSameDate = date.isAtSameMomentAs(prDate);
+                        newDate = isSameDate
+                            ? ""
+                            : MyDateTime.dateAndTime(
+                                time:
+                                    messagesItems[index].createdAt.toString());
+                        log(isSameDate.toString());
+                      }
                       return GestureDetector(
                         onTap: () {
                           setState(() {
@@ -110,11 +133,19 @@ class _ListMessageCardState extends State<ListMessageCard> {
                             }
                           });
                         },
-                        child: ChatMessageCard(
-                          select: widget.selectedMsg
-                              .contains(messagesItems[index].id),
-                          messageitem: messagesItems[index],
-                          roomId: widget.roomId,
+                        child: Column(
+                          children: [
+                            if (newDate != "")
+                              Center(
+                                child: Text(newDate),
+                              ),
+                            ChatMessageCard(
+                              select: widget.selectedMsg
+                                  .contains(messagesItems[index].id),
+                              messageitem: messagesItems[index],
+                              roomId: widget.roomId,
+                            ),
+                          ],
                         ),
                       );
                     },

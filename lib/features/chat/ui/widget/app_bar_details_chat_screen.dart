@@ -1,4 +1,5 @@
 import 'package:chat_app/core/models/chat_user_model.dart';
+import 'package:chat_app/core/utlie/date_time.dart';
 import 'package:chat_app/features/chat/data/firebase/fire_data_base.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +50,7 @@ class _AppBarDetailsChatScreenState extends State<AppBarDetailsChatScreen> {
                   return Text(
                     snapshot.data!.data()!['online']
                         ? 'Online'
-                        : " last Seen at ${widget.chatUserModel.lastActivated!}",
+                        : " last Seen ${MyDateTime.dateAndTime(time: widget.chatUserModel.lastActivated!)} at ${MyDateTime.timeDate(time: widget.chatUserModel.lastActivated!)}",
                     style: Theme.of(context).textTheme.labelLarge,
                   );
                 } else {
