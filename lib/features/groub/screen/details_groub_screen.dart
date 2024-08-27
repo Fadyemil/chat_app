@@ -35,6 +35,7 @@ class _DetailsGroubScreenState extends State<DetailsGroubScreen> {
                 Expanded(
                   child: SendMessageGroub(
                     sendMessageGroub: sendMessageGroub,
+                    chatGroup: widget.groubModel,
                   ),
                 ),
                 IconButton.filled(
