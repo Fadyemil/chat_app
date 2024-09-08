@@ -1,4 +1,5 @@
 import 'package:chat_app/core/models/groub_model.dart';
+import 'package:chat_app/core/utlie/date_time.dart';
 import 'package:chat_app/features/groub/screen/details_groub_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -31,7 +32,10 @@ class GroupCard extends StatelessWidget {
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
         ),
-        trailing: Text(ChatGroup.lastMessageTime!),
+        trailing: Text(
+          MyDateTime.timeDate(time: ChatGroup.lastMessageTime!),
+          style: Theme.of(context).textTheme.labelSmall,
+        ),
         // trailing: const Badge(
         //   padding: EdgeInsets.symmetric(horizontal: 12),
         //   label: Text("3"),
